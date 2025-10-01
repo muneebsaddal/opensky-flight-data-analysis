@@ -6,9 +6,11 @@ from python_opensky import OpenSky, StatesResponse
 async def main() -> None:
     async with OpenSky() as opensky:
         states: StatesResponse = await opensky.get_states()
+        
         # print(states)
         # with open("states.txt", "w") as f:
         #     f.write(str(states))
+        
         data_for_df = []
         if states: # Check if states is not None
             for s in states.states:
@@ -33,7 +35,6 @@ async def main() -> None:
                     'category': s.category
                 })
         df = pd.DataFrame(data_for_df)
-        
         df.fillna(value=pd.NA, inplace=True) # Replace None with pandas' NA
  
         df.to_csv("flight_data.csv")
